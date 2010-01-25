@@ -60,5 +60,5 @@ LIBRARY
 cdctool command line tool so other applications can take advantage of this
 cross-platform code.
 
-See api.html for details on using libcdctool.
+Run `make doxygen-doc` and look at ./lib/doc/index.html for API documentation.
 
