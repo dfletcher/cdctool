@@ -2,4 +2,12 @@
 0.0.1
 Initial revision.
 
+0.0.2
+Fixed symlinks in the distribution, relpaced them with files. The `libtoolize`
+utility created the symlinks originally, so it was re-run with the -c option to
+copy files instead of linking.
 
+Updated README, it had bad information about documentation.
+
+Uploaded a version of the API documentation online:
+http://fletchtronics.net/cdctool-api/
