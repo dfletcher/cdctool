@@ -1,0 +1,55 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.50])
+
+AC_INIT([cdctool], [0.0.1], [fletch@fletchtronics.net])
+
+AC_CONFIG_SRCDIR([bin/CDC_tool.c])
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE
+DX_INIT_DOXYGEN
+DX_DOXYGEN_FEATURE(ON)
+DX_HTML_FEATURE(ON)
+DX_MAN_FEATURE(ON)
+
+# Checks for programs.
+AC_PROG_CC
+AM_PROG_CC_C_O
+AC_PROG_LIBTOOL
+
+# Checks for libraries.
+AC_CHECK_LIB([popt], [poptGetContext], [
+  POPT="-lpopt"
+], [
+  echo
+  echo "FATAL: Cannot find popt. It is needed to build cdctool."
+  echo
+  exit -1
+])
+AC_SUBST([POPT])
+
+# Checks for header files.
+AC_CHECK_HEADERS([stdlib.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+
+# Checks for library functions.
+AC_FUNC_MALLOC
+
+# Cygwin needs extra love.
+if test "X`uname | grep CYGWIN`" != "X"; then
+  NOCYGWIN="-mno-cygwin"
+else
+  NOCYGWIN=""
+fi
+AC_SUBST([NOCYGWIN])
+
+# All warnings, warnings are errors.
+CFLAGS="$CFLAGS -Wall -Werror"
+
+AC_CONFIG_FILES([Makefile
+                 bin/Makefile
+                 lib/Makefile])
+AC_OUTPUT
