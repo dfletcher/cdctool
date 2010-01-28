@@ -344,7 +344,7 @@ int main(int argc, const char **argv) {
 
   
     CDCLineBuffer *serialbuf = cdc_filebuffer_new(file);
-    CDCLineBuffer *termbuf = cdc_stdfilebuffer_new(in);
+    CDCLineBuffer *termbuf = cdc_stdinfilebuffer_new();
 
     // While the user keeps the session open...
     while (!feof (in)) {
