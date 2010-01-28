@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.50])
 
-AC_INIT([cdctool], [0.0.1], [fletch@fletchtronics.net])
+AC_INIT([cdctool], [0.0.3], [fletch@fletchtronics.net])
 
 AC_CONFIG_SRCDIR([bin/CDC_tool.c])
 AC_CONFIG_HEADERS([config.h])

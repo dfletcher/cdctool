@@ -5,6 +5,8 @@ libcdctool_la_SOURCES = CDC_baudrate.c \
                         CDC_baudrate.h \
                         CDC_close.c \
                         CDC_close.h \
+                        CDC_discover.c \
+                        CDC_discover.h \
                         CDC_file.h \
                         CDC_flowcontrol.h \
                         CDC_flowcontrol.c \

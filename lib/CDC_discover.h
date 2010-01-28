@@ -22,9 +22,13 @@
 
 #include <regexp.h>
 
-/**
- * 
- */
-void cdc_discover(const char *testcommand, regex_t results);
+typedef struct {
+  char **matches;
+  size_t matchcount;
+} CDCDiscoveryResults;
+
+CDCDiscoveryResults *cdc_discover(const char *testcommand, const char *regex);
+
+void cdc_discover_free_results(CDCDiscoveryResults *discover);
 
 #endif /* [CDCDISCOVER_H] */

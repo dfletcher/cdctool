@@ -21,6 +21,10 @@
 #include "CDC_discover.h"
 #include "CDC_file.h"
 
-void cdc_discover(const char *testcommand, regex_t results) {
+CDCDiscoveryResults *cdc_discover(const char *testcommand, const char *regex) {
+
+}
+
+void cdc_discover_free_results(CDCDiscoveryResults *discover) {
 
 }
