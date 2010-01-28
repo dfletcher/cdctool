@@ -12,7 +12,7 @@ Updated README, it had bad information about documentation.
 Uploaded a version of the API documentation online:
 http://fletchtronics.net/cdctool-api/
 
-[interactive-mode branch]
+[0.0.3]
 Added support for interactive mode. Changed CDCLineBuffer so that it can support
 input from any source, not just CDCFile. Added --interactive,-a command line
 option to the cdctool program.
