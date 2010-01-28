@@ -59,6 +59,7 @@ int main(int argc, const char **argv) {
   int istopbits = 1;
   int iwordsize = 8;
   int ispeed = 57600;
+  int interactive = 0;
   int linestoread = 1;
   size_t bytessent;
   size_t bytesread;
@@ -135,7 +136,7 @@ int main(int argc, const char **argv) {
       "error file (DEFAULT=stderr)", "path|-"
     },
 
-    // --nowrite,-w
+    // --nowrite,-t
     {
       "nowrite", 't', 0, 0, 't',
       "Don't write anything, just wait for input. (DEFAULT=write)"
@@ -159,10 +160,10 @@ int main(int argc, const char **argv) {
       "Number of lines to read from the serial port before exiting. Zero is the same as -r. (DEFAULT=1)"
     },
 
-    // --version,-v
+    // --interactive,-a
     {
-      "version", 'v', 0, 0, 'v',
-      "Print the version number and exit. All other options are ignored."
+      "interactive", 'a', 0, 0, 'a',
+      "Interactive mode. -l is ignored and a single line of serial input is expected for each line of terminal input.",
     },
 
     // --help,-?
@@ -188,6 +189,9 @@ int main(int argc, const char **argv) {
     }
     else if (c == 'v') {
       version = 1;
+    }
+    else if (c == 'a') {
+      interactive = 1;
     }
   }
   if (c < -1) {
@@ -336,26 +340,54 @@ int main(int argc, const char **argv) {
   cdc_set_stopbits(file, stop);
   cdc_set_parity(file, parity);
 
-  // Write.
-  if (dowrite) {
-    while (!feof(in)) {
-      bytessent = 0;
-      bytesread = fread(buffer, 1, BUFFERSIZE, in);
-      while (bytessent != bytesread) {
-        bytessent += cdc_write(file, buffer+bytessent, bytesread-bytessent);
-      }
-    }
-  }
+  if (interactive) {
 
-  // Read.
-  if (doread) {
-    CDCLineBuffer *b = cdc_linebuffer_new(file);
-    for (i=0; i<linestoread; i++) {
-      line = cdc_linebuffer_readline(b);
+  
+    CDCLineBuffer *serialbuf = cdc_filebuffer_new(file);
+    CDCLineBuffer *termbuf = cdc_stdfilebuffer_new(in);
+
+    // While the user keeps the session open...
+    while (!feof (in)) {
+      
+      // Write a line.
+      line = cdc_linebuffer_readline(termbuf);
+      bytessent = 0;
+      bytesread = strlen(line);
+      while (bytessent != bytesread) {
+        bytessent += cdc_write(file, line+bytessent, bytesread-bytessent);
+      }
+      cdc_linebuffer_freeline(line);
+
+      // Read a line.
+      line = cdc_linebuffer_readline(serialbuf);
       fwrite(line, 1, strlen(line), out);
       cdc_linebuffer_freeline(line);
     }
-    cdc_linebuffer_free(b);
+
+  }
+  else {
+
+    // Write.
+    if (dowrite) {
+      while (!feof(in)) {
+        bytessent = 0;
+        bytesread = fread(buffer, 1, BUFFERSIZE, in);
+        while (bytessent != bytesread) {
+          bytessent += cdc_write(file, buffer+bytessent, bytesread-bytessent);
+        }
+      }
+    }
+
+    // Read.
+    if (doread) {
+      CDCLineBuffer *b = cdc_filebuffer_new(file);
+      for (i=0; i<linestoread; i++) {
+        line = cdc_linebuffer_readline(b);
+        fwrite(line, 1, strlen(line), out);
+        cdc_linebuffer_freeline(line);
+      }
+      cdc_linebuffer_free(b);
+    }
   }
 
   // Close.

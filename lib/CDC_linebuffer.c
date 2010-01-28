@@ -23,7 +23,14 @@
 #include "CDC_linebuffer.h"
 #include "CDC_read.h"
 
-#define CDC_LINEBUFFER_READBUFFER_SIZE 1024
+// NOTE: Previous versions used a bigger buffer but the new feature of
+// supporting different types of streams was causing trouble. Specifically,
+// stdin from a terminal won't return when newlines are encountered. It doesn't
+// return until the buffer is filled. There is probably a POSIX friendly way to
+// change this so that stdin read() calls will return when linebreaks are
+// encountered, but just changing the buffer/read size to 1 is a simple way
+// that should work on all platforms.
+#define CDC_LINEBUFFER_READBUFFER_SIZE 1
 
 /**
  *  Allocate a new string and copy the contents of the original.
@@ -99,30 +106,59 @@ size_t _cdc_buffer_append(
   char **destbuffer,  char *srcbuffer, size_t count, size_t length
 ) {
   size_t newsize = length + count;
-  *destbuffer = (char*)realloc(*destbuffer, newsize+1);
+  size_t term = newsize+1;
+  *destbuffer = (char*)realloc(*destbuffer, term);
   strncpy(*destbuffer+length, srcbuffer, count);
-  (*destbuffer)[newsize] = '\0';
+  (*destbuffer)[term] = 0;
   return newsize;
 }
 
-CDCLineBuffer *cdc_linebuffer_new(CDCFile *file) {
+/**
+ * Implements CDCLineBufferReadInput() for CDCFile type.
+ */
+size_t _cdc_filebuffer_input(
+  char *buffer, size_t maxlength, void *userdata
+) {
+  return cdc_read((CDCFile*)userdata, buffer, maxlength);
+}
+
+/**
+ * Implements CDCLineBufferReadInput() for FILE* type.
+ */
+size_t _cdc_stdfilebuffer_input(
+  char *buffer, size_t maxlength, void *userdata
+) {
+  return fread(buffer, 1, maxlength, (FILE*)userdata);
+}
+
+CDCLineBuffer *cdc_linebuffer_new(CDCLineBufferIn input, void *userdata) {
   CDCLineBuffer *rop;
   rop = (CDCLineBuffer*)malloc(sizeof(CDCLineBuffer));
-  rop->file = file;
+  rop->input = input;
+  rop->userdata = userdata;
   rop->buffer = NULL;
   rop->buffersize = 0;
   return rop;
 }
-#include <stdio.h>
+
+CDCLineBuffer *cdc_filebuffer_new(CDCFile *input) {
+  return cdc_linebuffer_new(_cdc_filebuffer_input, input);
+}
+
+CDCLineBuffer *cdc_stdfilebuffer_new(FILE *input) {
+  return cdc_linebuffer_new(_cdc_stdfilebuffer_input, input);
+}
+
 char *cdc_linebuffer_readline(CDCLineBuffer *buffer) {
 
-  char localbuf[CDC_LINEBUFFER_READBUFFER_SIZE];
+  char localbuf[CDC_LINEBUFFER_READBUFFER_SIZE+1];
+  
+  localbuf[1] = 0;
 
   while(1) {
-
-    // Read from the CDCFile.
-    size_t bytesread = cdc_read(
-      buffer->file, localbuf, CDC_LINEBUFFER_READBUFFER_SIZE
+    // Read from the input callback.
+    size_t bytesread = buffer->input(
+      localbuf, CDC_LINEBUFFER_READBUFFER_SIZE, buffer->userdata
     );
 
     // Newlines in the buffer?
@@ -131,28 +167,39 @@ char *cdc_linebuffer_readline(CDCLineBuffer *buffer) {
     );
 
     // Newlines in the local buffer?
-    int localbufnlpos = _cdc_linebuffer_strpos(localbuf, '\n', bytesread);
+    int localbufnlpos = _cdc_linebuffer_strpos(localbuf, 10, bytesread);
 
     // Case 1: buffer contains a newline. Shift the buffer down and return the
     // string up to that point.
-    if (buffernlpos > 0) {
+    if (buffernlpos >= 0) {
       char *string = _cdc_buffer_shift_down(
         buffer->buffer, buffernlpos+1, buffer->buffersize
       );
       buffer->buffer = (char*)realloc(buffer->buffer, buffernlpos+1);
-      buffer->buffer[buffernlpos+1] = 0;
+      buffer->buffersize = buffernlpos;
+      buffer->buffer[buffernlpos] = 0;
       return string;
     }
 
     // Case 2: line read contains a newline. Append the remaining chars to the
-    // buffer and return the string up to that point.
-    else if (localbufnlpos > 0) {
-      char *string = _cdc_buffer_shift_down(
-        localbuf, localbufnlpos+1, CDC_LINEBUFFER_READBUFFER_SIZE
-      );
+    // buffer, shift it down and return the string up to that point.
+    else if (localbufnlpos >= 0) {
+      char *string;
+      
+      if (buffer->buffersize == 0) {
+        // Filter out empty strings.
+	continue;
+      }
+
       buffer->buffersize = _cdc_buffer_append(
-        &buffer->buffer, localbuf, bytesread-strlen(string), buffer->buffersize
+        &buffer->buffer, localbuf, bytesread, buffer->buffersize
       );
+      string = _cdc_buffer_shift_down(
+        buffer->buffer, buffer->buffersize, buffer->buffersize
+      );
+      free(buffer->buffer);
+      buffer->buffer = 0;
+      buffer->buffersize = 0;
       return string;
     }
 
@@ -169,6 +216,9 @@ char *cdc_linebuffer_readline(CDCLineBuffer *buffer) {
 }
 
 void cdc_linebuffer_freeline(char *line) {
+  // NOTE: this is a bit odd to need to do this, but the library doing the
+  // allocating needs to do the disposing as well, or segfault (at least, this
+  // is the case in Windows/Cygwin).
   if (line) {
     free(line);
   }
