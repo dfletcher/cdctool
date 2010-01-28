@@ -149,6 +149,10 @@ CDCLineBuffer *cdc_stdfilebuffer_new(FILE *input) {
   return cdc_linebuffer_new(_cdc_stdfilebuffer_input, input);
 }
 
+CDCLineBuffer *cdc_stdinfilebuffer_new(void) {
+  return cdc_linebuffer_new(_cdc_stdfilebuffer_input, stdin);
+}
+
 char *cdc_linebuffer_readline(CDCLineBuffer *buffer) {
 
   char localbuf[CDC_LINEBUFFER_READBUFFER_SIZE+1];
