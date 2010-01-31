@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "CDC_linebuffer.h"
+#include "CDC_string.h"
 #include "CDC_read.h"
 
 // NOTE: Previous versions used a bigger buffer but the new feature of
@@ -33,49 +34,6 @@
 #define CDC_LINEBUFFER_READBUFFER_SIZE 1
 
 /**
- *  Allocate a new string and copy the contents of the original.
- *  @param original String to copy. Must be NULL terminated.
- *  @return String copy.
- */
-char *_cdc_copy_string(char *original) {
-  size_t origlen = strlen(original);
-  char *rop = (char*)malloc(origlen+1);
-  rop[origlen] = 0;
-  strncpy(rop, original, origlen);
-  return rop;
-}
-
-/**
- *  Allocate a new string and copy 'length' characters from the original.
- *  @param original String to copy.
- *  @param length Number of characters to copy.
- *  @return String copy.
- */
-char *_cdc_copy_string_n(char *original, size_t length) {
-  char *rop = (char*)malloc(length+1);
-  strncpy(rop, original, length);
-  rop[length] = 0;
-  return rop;
-}
-
-/**
- *  Utility function. Find the position of a character in the string, searching
- *  from str[0] to str[length-1].
- *  @param str String to search.
- *  @param c Character to search for.
- *  @param length Maximum search length.
- *  @return Position of the character in the string, or -1 if the character was
- *  not found.
- */
-int _cdc_linebuffer_strpos(char *str, char c, size_t length) {
-  int i;
-  for (i=0; i<length; i++) {
-    if (str[i] == c) return i;
-  }
-  return -1;
-}
-
-/**
  *  Utility function. Shift bytes down in a buffer and return the part that
  *  was squeezed off the front.
  *  @param buffer Address of the buffer.
@@ -85,8 +43,8 @@ int _cdc_linebuffer_strpos(char *str, char c, size_t length) {
  */
 char *_cdc_buffer_shift_down(char *buffer, size_t count, size_t length) {
   int i, j;
-  char *rop = _cdc_copy_string_n(buffer, count);
-  if (count == 0) return _cdc_copy_string("");
+  char *rop = cdc_string_copy_n(buffer, count);
+  if (count == 0) return cdc_string_copy("");
   for (i=count, j=0; i < length; i++, j++) {
     buffer[j] = buffer[i];
   }
@@ -106,10 +64,10 @@ size_t _cdc_buffer_append(
   char **destbuffer,  char *srcbuffer, size_t count, size_t length
 ) {
   size_t newsize = length + count;
-  size_t term = newsize+1;
-  *destbuffer = (char*)realloc(*destbuffer, term);
-  strncpy(*destbuffer+length, srcbuffer, count);
-  (*destbuffer)[term] = 0;
+  size_t term = newsize + 1;
+  (*destbuffer) = (char*)realloc((*destbuffer), term);
+  strncpy((*destbuffer)+length, srcbuffer, count);
+  (*destbuffer)[newsize] = 0;
   return newsize;
 }
 
@@ -166,12 +124,10 @@ char *cdc_linebuffer_readline(CDCLineBuffer *buffer) {
     );
 
     // Newlines in the buffer?
-    int buffernlpos = _cdc_linebuffer_strpos(
-      buffer->buffer, '\n', buffer->buffersize
-    );
+    int buffernlpos = cdc_string_pos(buffer->buffer, '\n', buffer->buffersize);
 
     // Newlines in the local buffer?
-    int localbufnlpos = _cdc_linebuffer_strpos(localbuf, 10, bytesread);
+    int localbufnlpos = cdc_string_pos(localbuf, 10, bytesread);
 
     // Case 1: buffer contains a newline. Shift the buffer down and return the
     // string up to that point.

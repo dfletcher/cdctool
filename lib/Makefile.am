@@ -19,6 +19,8 @@ libcdctool_la_SOURCES = CDC_baudrate.c \
                         CDC_read.c \
                         CDC_read.h \
                         CDC_stopbits.c \
+                        CDC_string.h \
+                        CDC_string.c \
                         CDC_stopbits.h \
                         CDC_wordsize.c \
                         CDC_wordsize.h \
@@ -26,9 +28,6 @@ libcdctool_la_SOURCES = CDC_baudrate.c \
                         CDC_write.h \
                         cdc.h
 
-extra_DIST            = Doxyfile 
-
-			
 # DOXYGEN rules follow
 
 ## --------------------------------- ##

@@ -23,6 +23,7 @@
 
 #include "CDC_baudrate.h"
 #include "CDC_close.h"
+#include "CDC_discover.h"
 #include "CDC_file.h"
 #include "CDC_flowcontrol.h"
 #include "CDC_linebuffer.h"

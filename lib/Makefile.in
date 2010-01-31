@@ -53,11 +53,12 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libcdctool_la_LIBADD =
 am_libcdctool_la_OBJECTS = libcdctool_la-CDC_baudrate.lo \
-	libcdctool_la-CDC_close.lo libcdctool_la-CDC_flowcontrol.lo \
+	libcdctool_la-CDC_close.lo libcdctool_la-CDC_discover.lo \
+	libcdctool_la-CDC_flowcontrol.lo \
 	libcdctool_la-CDC_linebuffer.lo libcdctool_la-CDC_open.lo \
 	libcdctool_la-CDC_parity.lo libcdctool_la-CDC_read.lo \
-	libcdctool_la-CDC_stopbits.lo libcdctool_la-CDC_wordsize.lo \
-	libcdctool_la-CDC_write.lo
+	libcdctool_la-CDC_stopbits.lo libcdctool_la-CDC_string.lo \
+	libcdctool_la-CDC_wordsize.lo libcdctool_la-CDC_write.lo
 libcdctool_la_OBJECTS = $(am_libcdctool_la_OBJECTS)
 libcdctool_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libcdctool_la_CFLAGS) \
@@ -220,6 +221,8 @@ libcdctool_la_SOURCES = CDC_baudrate.c \
                         CDC_baudrate.h \
                         CDC_close.c \
                         CDC_close.h \
+                        CDC_discover.c \
+                        CDC_discover.h \
                         CDC_file.h \
                         CDC_flowcontrol.h \
                         CDC_flowcontrol.c \
@@ -232,6 +235,8 @@ libcdctool_la_SOURCES = CDC_baudrate.c \
                         CDC_read.c \
                         CDC_read.h \
                         CDC_stopbits.c \
+                        CDC_string.h \
+                        CDC_string.c \
                         CDC_stopbits.h \
                         CDC_wordsize.c \
                         CDC_wordsize.h \
@@ -239,7 +244,6 @@ libcdctool_la_SOURCES = CDC_baudrate.c \
                         CDC_write.h \
                         cdc.h
 
-extra_DIST = Doxyfile 
 
 # DOXYGEN rules follow
 @DX_COND_doc_TRUE@@DX_COND_html_TRUE@DX_CLEAN_HTML = @DX_DOCDIR@/html
@@ -340,12 +344,14 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_baudrate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_close.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_discover.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_flowcontrol.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_linebuffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_open.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_parity.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_read.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_stopbits.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_string.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_wordsize.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcdctool_la-CDC_write.Plo@am__quote@
 
@@ -383,6 +389,13 @@ libcdctool_la-CDC_close.lo: CDC_close.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='CDC_close.c' object='libcdctool_la-CDC_close.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcdctool_la_CFLAGS) $(CFLAGS) -c -o libcdctool_la-CDC_close.lo `test -f 'CDC_close.c' || echo '$(srcdir)/'`CDC_close.c
+
+libcdctool_la-CDC_discover.lo: CDC_discover.c
+@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcdctool_la_CFLAGS) $(CFLAGS) -MT libcdctool_la-CDC_discover.lo -MD -MP -MF $(DEPDIR)/libcdctool_la-CDC_discover.Tpo -c -o libcdctool_la-CDC_discover.lo `test -f 'CDC_discover.c' || echo '$(srcdir)/'`CDC_discover.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcdctool_la-CDC_discover.Tpo $(DEPDIR)/libcdctool_la-CDC_discover.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='CDC_discover.c' object='libcdctool_la-CDC_discover.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcdctool_la_CFLAGS) $(CFLAGS) -c -o libcdctool_la-CDC_discover.lo `test -f 'CDC_discover.c' || echo '$(srcdir)/'`CDC_discover.c
 
 libcdctool_la-CDC_flowcontrol.lo: CDC_flowcontrol.c
 @am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcdctool_la_CFLAGS) $(CFLAGS) -MT libcdctool_la-CDC_flowcontrol.lo -MD -MP -MF $(DEPDIR)/libcdctool_la-CDC_flowcontrol.Tpo -c -o libcdctool_la-CDC_flowcontrol.lo `test -f 'CDC_flowcontrol.c' || echo '$(srcdir)/'`CDC_flowcontrol.c
@@ -425,6 +438,13 @@ libcdctool_la-CDC_stopbits.lo: CDC_stopbits.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='CDC_stopbits.c' object='libcdctool_la-CDC_stopbits.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcdctool_la_CFLAGS) $(CFLAGS) -c -o libcdctool_la-CDC_stopbits.lo `test -f 'CDC_stopbits.c' || echo '$(srcdir)/'`CDC_stopbits.c
+
+libcdctool_la-CDC_string.lo: CDC_string.c
+@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcdctool_la_CFLAGS) $(CFLAGS) -MT libcdctool_la-CDC_string.lo -MD -MP -MF $(DEPDIR)/libcdctool_la-CDC_string.Tpo -c -o libcdctool_la-CDC_string.lo `test -f 'CDC_string.c' || echo '$(srcdir)/'`CDC_string.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libcdctool_la-CDC_string.Tpo $(DEPDIR)/libcdctool_la-CDC_string.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='CDC_string.c' object='libcdctool_la-CDC_string.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcdctool_la_CFLAGS) $(CFLAGS) -c -o libcdctool_la-CDC_string.lo `test -f 'CDC_string.c' || echo '$(srcdir)/'`CDC_string.c
 
 libcdctool_la-CDC_wordsize.lo: CDC_wordsize.c
 @am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcdctool_la_CFLAGS) $(CFLAGS) -MT libcdctool_la-CDC_wordsize.lo -MD -MP -MF $(DEPDIR)/libcdctool_la-CDC_wordsize.Tpo -c -o libcdctool_la-CDC_wordsize.lo `test -f 'CDC_wordsize.c' || echo '$(srcdir)/'`CDC_wordsize.c

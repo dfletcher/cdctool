@@ -32,7 +32,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = cdctool$(EXEEXT)
+bin_PROGRAMS = cdctool$(EXEEXT) cdcdiscover$(EXEEXT)
 subdir = bin
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -46,6 +46,12 @@ CONFIG_CLEAN_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
+am_cdcdiscover_OBJECTS = cdcdiscover-CDC_discover.$(OBJEXT)
+cdcdiscover_OBJECTS = $(am_cdcdiscover_OBJECTS)
+cdcdiscover_LDADD = $(LDADD)
+cdcdiscover_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(cdcdiscover_CFLAGS) \
+	$(CFLAGS) $(cdcdiscover_LDFLAGS) $(LDFLAGS) -o $@
 am_cdctool_OBJECTS = cdctool-CDC_tool.$(OBJEXT)
 cdctool_OBJECTS = $(am_cdctool_OBJECTS)
 cdctool_LDADD = $(LDADD)
@@ -64,8 +70,8 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(cdctool_SOURCES)
-DIST_SOURCES = $(cdctool_SOURCES)
+SOURCES = $(cdcdiscover_SOURCES) $(cdctool_SOURCES)
+DIST_SOURCES = $(cdcdiscover_SOURCES) $(cdctool_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -206,6 +212,9 @@ top_srcdir = @top_srcdir@
 cdctool_CFLAGS = -I@top_srcdir@/lib
 cdctool_LDFLAGS = -L@top_builddir@/lib -lcdctool @POPT@
 cdctool_SOURCES = CDC_tool.c
+cdcdiscover_CFLAGS = -I@top_srcdir@/lib
+cdcdiscover_LDFLAGS = -L@top_builddir@/lib -lcdctool @POPT@
+cdcdiscover_SOURCES = CDC_discover.c
 all: all-am
 
 .SUFFIXES:
@@ -267,6 +276,9 @@ clean-binPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
+cdcdiscover$(EXEEXT): $(cdcdiscover_OBJECTS) $(cdcdiscover_DEPENDENCIES) 
+	@rm -f cdcdiscover$(EXEEXT)
+	$(cdcdiscover_LINK) $(cdcdiscover_OBJECTS) $(cdcdiscover_LDADD) $(LIBS)
 cdctool$(EXEEXT): $(cdctool_OBJECTS) $(cdctool_DEPENDENCIES) 
 	@rm -f cdctool$(EXEEXT)
 	$(cdctool_LINK) $(cdctool_OBJECTS) $(cdctool_LDADD) $(LIBS)
@@ -277,6 +289,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdcdiscover-CDC_discover.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdctool-CDC_tool.Po@am__quote@
 
 .c.o:
@@ -299,6 +312,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+cdcdiscover-CDC_discover.o: CDC_discover.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cdcdiscover_CFLAGS) $(CFLAGS) -MT cdcdiscover-CDC_discover.o -MD -MP -MF $(DEPDIR)/cdcdiscover-CDC_discover.Tpo -c -o cdcdiscover-CDC_discover.o `test -f 'CDC_discover.c' || echo '$(srcdir)/'`CDC_discover.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/cdcdiscover-CDC_discover.Tpo $(DEPDIR)/cdcdiscover-CDC_discover.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='CDC_discover.c' object='cdcdiscover-CDC_discover.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cdcdiscover_CFLAGS) $(CFLAGS) -c -o cdcdiscover-CDC_discover.o `test -f 'CDC_discover.c' || echo '$(srcdir)/'`CDC_discover.c
+
+cdcdiscover-CDC_discover.obj: CDC_discover.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cdcdiscover_CFLAGS) $(CFLAGS) -MT cdcdiscover-CDC_discover.obj -MD -MP -MF $(DEPDIR)/cdcdiscover-CDC_discover.Tpo -c -o cdcdiscover-CDC_discover.obj `if test -f 'CDC_discover.c'; then $(CYGPATH_W) 'CDC_discover.c'; else $(CYGPATH_W) '$(srcdir)/CDC_discover.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/cdcdiscover-CDC_discover.Tpo $(DEPDIR)/cdcdiscover-CDC_discover.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='CDC_discover.c' object='cdcdiscover-CDC_discover.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cdcdiscover_CFLAGS) $(CFLAGS) -c -o cdcdiscover-CDC_discover.obj `if test -f 'CDC_discover.c'; then $(CYGPATH_W) 'CDC_discover.c'; else $(CYGPATH_W) '$(srcdir)/CDC_discover.c'; fi`
 
 cdctool-CDC_tool.o: CDC_tool.c
 @am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cdctool_CFLAGS) $(CFLAGS) -MT cdctool-CDC_tool.o -MD -MP -MF $(DEPDIR)/cdctool-CDC_tool.Tpo -c -o cdctool-CDC_tool.o `test -f 'CDC_tool.c' || echo '$(srcdir)/'`CDC_tool.c

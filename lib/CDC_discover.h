@@ -20,14 +20,25 @@
 #ifndef CDCDISCOVER_H
 #define CDCDISCOVER_H
 
-#include <regexp.h>
+#include <stdlib.h>
+#include <regex.h>
+
+#ifndef CDCDISCOVER_NUM_CHECKS
+#define CDCDISCOVER_NUM_CHECKS 64
+#endif
+
+#ifndef CDCDISCOVER_READ_BUFFER
+#define CDCDISCOVER_READ_BUFFER 2048
+#endif
 
 typedef struct {
-  char **matches;
-  size_t matchcount;
+  char **match;
+  size_t matches;
 } CDCDiscoveryResults;
 
-CDCDiscoveryResults *cdc_discover(const char *testcommand, const char *regex);
+CDCDiscoveryResults *cdc_discover(
+  const char *testcommand, const char *regex, size_t numlines
+);
 
 void cdc_discover_free_results(CDCDiscoveryResults *discover);
 

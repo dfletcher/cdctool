@@ -42,11 +42,11 @@ typedef struct {
   #ifdef __WIN32__
     /** Windows backed CDCFile. */
     HANDLE file;
-	DCB savedparams;
+    DCB savedparams;
   #else
     /** POSIX backed CDCFile. */
     int file;
-	struct termios savedparams;
+    struct termios savedparams;
   #endif
 } CDCFile;
 

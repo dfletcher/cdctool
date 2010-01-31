@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.50])
 
-AC_INIT([cdctool], [0.0.3], [fletch@fletchtronics.net])
+AC_INIT([cdctool], [0.0.4], [fletch@fletchtronics.net])
 
 AC_CONFIG_SRCDIR([bin/CDC_tool.c])
 AC_CONFIG_HEADERS([config.h])
@@ -19,6 +19,17 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
 
+# Checks for header files.
+AC_CHECK_HEADERS([stdlib.h string.h stdio.h regex.h popt.h])
+
+# Cygwin needs extra love.
+if test "X`uname | grep CYGWIN`" != "X"; then
+  NOCYGWIN="-mno-cygwin"
+else
+  NOCYGWIN=""
+fi
+AC_SUBST([NOCYGWIN])
+
 # Checks for libraries.
 AC_CHECK_LIB([popt], [poptGetContext], [
   POPT="-lpopt"
@@ -30,26 +41,17 @@ AC_CHECK_LIB([popt], [poptGetContext], [
 ])
 AC_SUBST([POPT])
 
-# Checks for header files.
-AC_CHECK_HEADERS([stdlib.h])
-
 # Checks for typedefs, structures, and compiler characteristics.
 
 # Checks for library functions.
 AC_FUNC_MALLOC
 
-# Cygwin needs extra love.
-if test "X`uname | grep CYGWIN`" != "X"; then
-  NOCYGWIN="-mno-cygwin"
-else
-  NOCYGWIN=""
-fi
-AC_SUBST([NOCYGWIN])
-
 # All warnings, warnings are errors.
 CFLAGS="$CFLAGS -Wall -Werror"
 
-AC_CONFIG_FILES([Makefile
-                 bin/Makefile
-                 lib/Makefile])
+AC_CONFIG_FILES([
+  Makefile
+  bin/Makefile
+  lib/Makefile
+])
 AC_OUTPUT
