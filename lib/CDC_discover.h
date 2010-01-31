@@ -24,6 +24,10 @@
 #include <regex.h>
 
 #ifndef CDCDISCOVER_NUM_CHECKS
+/** This is the number of COM ports to check in Windows. Use
+ *  -DCDCDISCOVER_NUM_CHECKS [n] to increase or decrease this
+ *  at build time.
+ */
 #define CDCDISCOVER_NUM_CHECKS 64
 #endif
 

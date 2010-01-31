@@ -18,6 +18,10 @@
 
 -----------------------------------------------------------------------------*/
 
+#ifndef __WIN32__
+  #include <glob.h>
+#endif
+
 #include <stdlib.h>
 #include "CDC_discover.h"
 #include "CDC_file.h"
@@ -31,28 +35,63 @@
 #ifdef __WIN32__
   const char *CDCDISCOVER_BASES[] = {
     "COM",
-    0
+    0 // Term.
   };
 #else
   const char *CDCDISCOVER_BASES[] = {
-    // TODO: what's missing? MacOS?
-    "/dev/ttyACM",
-    "/dev/ttyUSB",
-    "/dev/usb/acm",
-    "/dev/usb/usb",
-    0
+
+    // TODO: what's missing?
+    // TODO: put the platforms in #ifdefs, save a bit of time
+
+    // Linux
+    "/dev/ttyACM*",
+    "/dev/ttyUSB*",
+    "/dev/usb/tty/*",
+    "/dev/usb/acm/*",
+
+    // MacOSX
+    "/dev/cu.USA*P*.1",
+    "/dev/tty.USA*P*.1",
+
+    // NetBSD
+    "/dev/[tdc]tyU",
+
+    0 // Term.
   };
 #endif
 
-CDCDiscoveryResults *cdc_discover(
-  const char *testcommand, const char *regex, size_t numlines
+void _cdc_discover(
+  CDCDiscoveryResults *rop, CDCFile *file, size_t numlines,
+  char *path, const char *command, regex_t *cregex
 ) {
-  int i, j, k;
+  int i;
+  CDCLineBuffer *buf = cdc_filebuffer_new(file);
+  cdc_write(file, command, strlen(command));
+  cdc_write(file, "\r\n", 2);
+  for (i=0; i<numlines; i++) {
+    char *line = cdc_linebuffer_readline(buf);
+    if (regexec(cregex, line, 0, 0, 0) == 0) {
+      size_t newlen = rop->matches++;
+      rop->match = realloc(rop->match, sizeof(char*) * rop->matches);
+      rop->match[newlen] = cdc_string_copy(path);
+    }
+    cdc_linebuffer_freeline(line);
+  }
+  cdc_linebuffer_free(buf);
+}
+
+CDCDiscoveryResults *cdc_discover(
+  const char *command, const char *regex, size_t numlines
+) {
+  int i, j;
   regex_t cregex;
   CDCFile *cdcfile;
-  CDCLineBuffer *buf;
   CDCDiscoveryResults *rop;
-  char namebuffer[64];
+  #ifdef __WIN32__
+    char namebuffer[16];
+  #else
+    glob_t globbuffer;
+  #endif
 
   rop = (CDCDiscoveryResults*)malloc(sizeof(CDCDiscoveryResults));
   rop->matches = 0;
@@ -63,26 +102,26 @@ CDCDiscoveryResults *cdc_discover(
   }
 
   for (i=0; CDCDISCOVER_BASES[i]; i++) {
-    for (j=0; j<CDCDISCOVER_NUM_CHECKS; j++) {
-      sprintf(namebuffer, "%s%d", CDCDISCOVER_BASES[i], j);
-      cdcfile = cdc_open(namebuffer);
-      if (cdcfile) {
-        buf = cdc_filebuffer_new(cdcfile);
-        cdc_write(cdcfile, testcommand, strlen(testcommand));
-        cdc_write(cdcfile, "\r\n", 2);
-        for (k=0; k<numlines; k++) {
-          char *line = cdc_linebuffer_readline(buf);
-          if (regexec(&cregex, line, 0, 0, 0) == 0) {
-            size_t newlen = rop->matches++;
-            rop->match = realloc(rop->match, sizeof(char*) * rop->matches);
-            rop->match[newlen] = cdc_string_copy(namebuffer);
-          }
-          cdc_linebuffer_freeline(line);
+    #ifdef __WIN32__
+      for (j=0; j<CDCDISCOVER_NUM_CHECKS; j++) {
+        sprintf(namebuffer, "%s%d", CDCDISCOVER_BASES[i], j);
+        cdcfile = cdc_open(namebuffer);
+        if (cdcfile) {
+          _cdc_discover(rop, cdcfile, numlines, namebuffer, command, &cregex);
+          cdc_close(cdcfile);
         }
-        cdc_linebuffer_free(buf);
+      }
+    #else
+      glob(CDCDISCOVER_BASES[i], GLOB_NOSORT|GLOB_TILDE, NULL, &globbuffer);
+      for (j=0; j<globbuffer.gl_pathc; j++) {
+        cdcfile = cdc_open(globbuffer.gl_pathv[j]);
+        _cdc_discover(
+          rop, cdcfile, numlines, globbuffer.gl_pathv[j], command, &cregex
+        );
         cdc_close(cdcfile);
       }
-    }
+      globfree(&globbuffer);
+    #endif
   }
 
   regfree(&cregex);
