@@ -18,13 +18,27 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "CDC_discover.h"
-#include "CDC_file.h"
+#include "CDC_string.h"
 
-CDCDiscoveryResults *cdc_discover(const char *testcommand, const char *regex) {
-
+char *cdc_string_copy(char *original) {
+  size_t origlen = strlen(original);
+  char *rop = (char*)malloc(origlen+1);
+  rop[origlen] = 0;
+  strncpy(rop, original, origlen);
+  return rop;
 }
 
-void cdc_discover_free_results(CDCDiscoveryResults *discover) {
+char *cdc_string_copy_n(char *original, size_t length) {
+  char *rop = (char*)malloc(length+1);
+  strncpy(rop, original, length);
+  rop[length] = 0;
+  return rop;
+}
 
+int cdc_string_pos(char *str, char c, size_t length) {
+  int i;
+  for (i=0; i<length; i++) {
+    if (str[i] == c) return i;
+  }
+  return -1;
 }
