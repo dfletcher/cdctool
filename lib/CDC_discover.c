@@ -33,12 +33,12 @@
 #include "CDC_linebuffer.h"
 
 #ifdef __WIN32__
-  const char *CDCDISCOVER_BASES[] = {
+  const char *CDCDISCOVER_BASE[] = {
     "COM",
     0 // Term.
   };
 #else
-  const char *CDCDISCOVER_BASES[] = {
+  const char *CDCDISCOVER_BASE[] = {
 
     // TODO: what's missing?
     // TODO: put the platforms in #ifdefs, save a bit of time
@@ -62,11 +62,11 @@
 
 void _cdc_discover(
   CDCDiscoveryResults *rop, CDCFile *file, size_t numlines,
-  char *path, const char *command, regex_t *cregex
+  const char *path, const char *cmd, regex_t *cregex
 ) {
   int i;
   CDCLineBuffer *buf = cdc_filebuffer_new(file);
-  cdc_write(file, command, strlen(command));
+  cdc_write(file, cmd, strlen(cmd));
   cdc_write(file, "\r\n", 2);
   for (i=0; i<numlines; i++) {
     char *line = cdc_linebuffer_readline(buf);
@@ -81,16 +81,17 @@ void _cdc_discover(
 }
 
 CDCDiscoveryResults *cdc_discover(
-  const char *command, const char *regex, size_t numlines
+  const char *cmd, const char *regex, size_t numlines,
+  size_t numaddl, const char **addl
 ) {
   int i, j;
   regex_t cregex;
   CDCFile *cdcfile;
   CDCDiscoveryResults *rop;
   #ifdef __WIN32__
-    char namebuffer[16];
+    char namebuf[16];
   #else
-    glob_t globbuffer;
+    glob_t globbuf;
   #endif
 
   rop = (CDCDiscoveryResults*)malloc(sizeof(CDCDiscoveryResults));
@@ -101,27 +102,35 @@ CDCDiscoveryResults *cdc_discover(
     return rop;
   }
 
-  for (i=0; CDCDISCOVER_BASES[i]; i++) {
+  for (i=0; CDCDISCOVER_BASE[i]; i++) {
     #ifdef __WIN32__
       for (j=0; j<CDCDISCOVER_NUM_CHECKS; j++) {
-        sprintf(namebuffer, "%s%d", CDCDISCOVER_BASES[i], j);
-        cdcfile = cdc_open(namebuffer);
+        sprintf(namebuf, "%s%d", CDCDISCOVER_BASE[i], j);
+        cdcfile = cdc_open(namebuf);
         if (cdcfile) {
-          _cdc_discover(rop, cdcfile, numlines, namebuffer, command, &cregex);
+          _cdc_discover(rop, cdcfile, numlines, namebuf, cmd, &cregex);
           cdc_close(cdcfile);
         }
       }
     #else
-      glob(CDCDISCOVER_BASES[i], GLOB_NOSORT|GLOB_TILDE, NULL, &globbuffer);
-      for (j=0; j<globbuffer.gl_pathc; j++) {
-        cdcfile = cdc_open(globbuffer.gl_pathv[j]);
+      glob(CDCDISCOVER_BASE[i], GLOB_NOSORT|GLOB_TILDE, NULL, &globbuf);
+      for (j=0; j<globbuf.gl_pathc; j++) {
+        cdcfile = cdc_open(globbuf.gl_pathv[j]);
         _cdc_discover(
-          rop, cdcfile, numlines, globbuffer.gl_pathv[j], command, &cregex
+          rop, cdcfile, numlines, globbuf.gl_pathv[j], cmd, &cregex
         );
         cdc_close(cdcfile);
       }
-      globfree(&globbuffer);
+      globfree(&globbuf);
     #endif
+  }
+
+  for (i=0; i<numaddl; i++) {
+    cdcfile = cdc_open(addl[i]);
+    if (cdcfile) {
+      _cdc_discover(rop, cdcfile, numlines, addl[i], cmd, &cregex);
+      cdc_close(cdcfile);
+    }
   }
 
   regfree(&cregex);

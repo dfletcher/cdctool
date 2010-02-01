@@ -20,7 +20,7 @@
 
 #include "CDC_string.h"
 
-char *cdc_string_copy(char *original) {
+char *cdc_string_copy(const char *original) {
   size_t origlen = strlen(original);
   char *rop = (char*)malloc(origlen+1);
   rop[origlen] = 0;
@@ -28,14 +28,14 @@ char *cdc_string_copy(char *original) {
   return rop;
 }
 
-char *cdc_string_copy_n(char *original, size_t length) {
+char *cdc_string_copy_n(const char *original, size_t length) {
   char *rop = (char*)malloc(length+1);
   strncpy(rop, original, length);
   rop[length] = 0;
   return rop;
 }
 
-int cdc_string_pos(char *str, char c, size_t length) {
+int cdc_string_pos(const char *str, char c, size_t length) {
   int i;
   for (i=0; i<length; i++) {
     if (str[i] == c) return i;

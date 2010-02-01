@@ -29,7 +29,7 @@
  *  @param original String to copy. Must be NULL terminated.
  *  @return String copy.
  */
-char *cdc_string_copy(char *original);
+char *cdc_string_copy(const char *original);
 
 /**
  *  Allocate a new string and copy 'length' characters from the original.
@@ -37,7 +37,7 @@ char *cdc_string_copy(char *original);
  *  @param length Number of characters to copy.
  *  @return String copy.
  */
-char *cdc_string_copy_n(char *original, size_t length);
+char *cdc_string_copy_n(const char *original, size_t length);
 
 /**
  *  Utility function. Find the position of a character in the string, searching
@@ -48,6 +48,6 @@ char *cdc_string_copy_n(char *original, size_t length);
  *  @return Position of the character in the string, or -1 if the character was
  *  not found.
  */
-int cdc_string_pos(char *str, char c, size_t length);
+int cdc_string_pos(const char *str, char c, size_t length);
 
 #endif /* [CDCSTRING_H] */

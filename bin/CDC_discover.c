@@ -50,10 +50,12 @@ int main(int argc, const char **argv) {
 
   int i;
   char c;
+  size_t numaddl = 0;
   int linestoread = 1;
   char *outpath = NULL;
   char *errpath = NULL;
   poptContext poptcxt;
+  const char **addl = NULL;
   const char *regexp = NULL;
   const char *command = NULL;
   CDCDiscoveryResults *discovery;
@@ -93,7 +95,9 @@ int main(int argc, const char **argv) {
 
   // Process popt options.
   poptcxt = poptGetContext(NULL, argc, argv, options, 0);
-  poptSetOtherOptionHelp(poptcxt, "[OPTIONS]* <command> <regexp>");
+  poptSetOtherOptionHelp(
+    poptcxt, "[OPTIONS]* <command> <regexp> (additional port)+"
+  );
   if (argc < 2) {
     usage(poptcxt, 0, 0, 0);
   }
@@ -123,21 +127,33 @@ int main(int argc, const char **argv) {
     }
   }
 
-  // Get the command and query.
+  // Get the command and regular expression query.
   command = poptGetArg(poptcxt);
-  if ((command == NULL) || (poptPeekArg(poptcxt) == NULL)) {
+  regexp = poptGetArg(poptcxt);
+  if ((command == NULL) || (regexp == NULL)) {
     usage(
       poptcxt, 1, "Please specify", "<command> <regex>"
     );
   }
-  regexp = poptGetArg(poptcxt);
+
+  // Additional ports to check.
+  while (poptPeekArg(poptcxt)) {
+    addl = (const char**)realloc(addl, (++numaddl) * sizeof(char*));
+    addl[numaddl] = poptGetArg(poptcxt);
+  }
 
   // Discovery.
-  discovery = cdc_discover(command, regexp, linestoread);
+  discovery = cdc_discover(command, regexp, linestoread, numaddl, addl);
   for (i=0; i<discovery->matches; i++) {
     fprintf(out, "%s\n", discovery->match[i]);
   }
   cdc_discover_free_results(discovery);
+
+  // Cleanup.
+  if (numaddl) {
+    free(addl);
+  }
+  poptFreeContext(poptcxt);
 
   return 0;
 }
