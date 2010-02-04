@@ -67,6 +67,13 @@ CDCLineBuffer *cdc_linebuffer_new(CDCLineBufferIn input, void *userdata);
 CDCLineBuffer *cdc_stdfilebuffer_new(FILE *f);
 
 /**
+ *  Initialize a CDCLineBuffer structure for use with stdin.
+ *  Provides the necessary callback internally.
+ *  @return New CDCLineBuffer. Use cdc_linebuffer_free() when you're done.
+ */
+CDCLineBuffer *cdc_stdinfilebuffer_new(void);
+
+/**
  *  Read a single line. Blocks until a line is available.
  *  @param buffer CDCLineBuffer to read.
  */
