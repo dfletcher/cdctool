@@ -64,7 +64,7 @@ CDCParity cdc_get_parity(CDCFile *file) {
   #else
     struct termios tio;
     tcgetattr(file->file, &tio);
-    if (!tio.c_cflag & PARENB) return CDCPARITY_NOPARITY;
+    if (!(tio.c_cflag & PARENB)) return CDCPARITY_NOPARITY;
     if (tio.c_cflag & PARODD) return CDCPARITY_ODDPARITY;
     return CDCPARITY_EVENPARITY;
   #endif
