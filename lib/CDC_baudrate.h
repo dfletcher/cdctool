@@ -20,7 +20,7 @@
 #ifndef CDCBAUDRATE_H
 #define CDCBAUDRATE_H
 
-#include "CDC_file.h"
+#include <CDC_file.h>
 
 /**
  *  Set of common baud rates.

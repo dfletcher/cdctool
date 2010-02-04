@@ -21,7 +21,7 @@
 #define CDCLINE_H
 
 #include <stdio.h>
-#include "CDC_file.h"
+#include <CDC_file.h>
 
 /**
  *  Callback for CDCLineBuffer input.

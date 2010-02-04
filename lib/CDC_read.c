@@ -21,7 +21,7 @@
 #ifndef __WIN32__
   #include <unistd.h>
 #endif
-#include "CDC_read.h"
+#include <CDC_read.h>
 
 size_t cdc_read(CDCFile *file, const char *buffer, size_t maxlength) {
 

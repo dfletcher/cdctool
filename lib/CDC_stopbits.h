@@ -20,7 +20,7 @@
 #ifndef CDCSTOPBITS_H
 #define CDCSTOPBITS_H
 
-#include "CDC_file.h"
+#include <CDC_file.h>
 
 /**
  *  Set of common stop-bits settings.

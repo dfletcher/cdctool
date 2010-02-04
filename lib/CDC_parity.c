@@ -18,7 +18,7 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "CDC_parity.h"
+#include <CDC_parity.h>
 
 void cdc_set_parity(CDCFile *file, CDCParity parity) {
   #ifdef __WIN32__

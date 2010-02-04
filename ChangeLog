@@ -19,3 +19,6 @@ option to the cdctool program.
 
 0.0.4
 Two minor syntax issues causing -Wall -Werror to stop the build were fixed.
+Moved .h files from the _SOURCES variable to include_HEADERS so they now install
+properly. Fixed the #include symbols in all sources to use angle brackets <>
+instead of quotes.

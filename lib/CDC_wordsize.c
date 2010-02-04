@@ -18,7 +18,7 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "CDC_wordsize.h"
+#include <CDC_wordsize.h>
 
 void cdc_set_wordsize(CDCFile *file, CDCWordSize wordsize) {
   #ifdef __WIN32__

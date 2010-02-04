@@ -20,7 +20,7 @@
 #ifndef CDOPEN_H
 #define CDOPEN_H
 
-#include "CDC_file.h"
+#include <CDC_file.h>
 
 /**
  *  Open a CDC file. All CDCFiles are opened for both reading and writing so

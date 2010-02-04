@@ -18,7 +18,7 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "CDC_stopbits.h"
+#include <CDC_stopbits.h>
 
 void cdc_set_stopbits(CDCFile *file, CDCStopBits stopbits) {
   #ifdef __WIN32__

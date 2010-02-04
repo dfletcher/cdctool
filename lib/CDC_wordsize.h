@@ -20,7 +20,7 @@
 #ifndef CDCWORDSIZE_H
 #define CDCWORDSIZE_H
 
-#include "CDC_file.h"
+#include <CDC_file.h>
 
 /**
  *  Set of common word (character) sizes.

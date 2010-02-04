@@ -22,8 +22,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <cdc.h>
 #include "config.h"
-#include "cdc.h"
 
 #define BUFFERSIZE 1024
 
