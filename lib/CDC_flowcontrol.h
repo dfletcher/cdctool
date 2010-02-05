@@ -20,7 +20,7 @@
 #ifndef CDCFLOWCONTROL_H
 #define CDCFLOWCONTROL_H
 
-#include "CDC_file.h"
+#include <CDC_file.h>
 
 /**
  *  Set of common flow control settings.

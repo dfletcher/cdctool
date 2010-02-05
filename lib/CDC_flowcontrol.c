@@ -18,7 +18,7 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "CDC_flowcontrol.h"
+#include <CDC_flowcontrol.h>
 
 void cdc_set_flowcontrol(CDCFile *file, CDCFlowControl flowctrl) {
   #ifdef __WIN32__

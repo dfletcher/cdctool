@@ -18,7 +18,7 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "CDC_baudrate.h"
+#include <CDC_baudrate.h>
 
 void cdc_set_baudrate(CDCFile *file, CDCBaudRate baudrate) {
   #ifdef __WIN32__

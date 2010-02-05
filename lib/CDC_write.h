@@ -20,7 +20,7 @@
 #ifndef CDCWRITE_H
 #define CDCWRITE_H
 
-#include "CDC_file.h"
+#include <CDC_file.h>
 
 /**
  *  Write data to a CDCFile. Set any needed serial comm parameters before

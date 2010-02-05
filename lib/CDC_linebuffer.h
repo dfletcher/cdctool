@@ -21,7 +21,7 @@
 #define CDCLINE_H
 
 #include <stdio.h>
-#include "CDC_file.h"
+#include <CDC_file.h>
 
 /**
  *  Callback for CDCLineBuffer input.
@@ -67,7 +67,7 @@ CDCLineBuffer *cdc_linebuffer_new(CDCLineBufferIn input, void *userdata);
 CDCLineBuffer *cdc_stdfilebuffer_new(FILE *f);
 
 /**
- *  Initialize a CDCLineBuffer structure for use with a stdin.
+ *  Initialize a CDCLineBuffer structure for use with stdin.
  *  Provides the necessary callback internally.
  *  @return New CDCLineBuffer. Use cdc_linebuffer_free() when you're done.
  */

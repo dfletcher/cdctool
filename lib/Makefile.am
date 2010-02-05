@@ -1,33 +1,30 @@
-lib_LTLIBRARIES       = libcdctool.la
-libcdctool_la_CFLAGS  = @NOCYGWIN@ @CDC_CFLAGS@
-libcdctool_la_LDFLAGS = @NOCYGWIN@ -no-undefined
-libcdctool_la_LIBADD  = @CDC_LDADD@
-libcdctool_la_SOURCES = CDC_baudrate.c \
-                        CDC_baudrate.h \
-                        CDC_close.c \
-                        CDC_close.h \
-                        CDC_discover.c \
-                        CDC_discover.h \
-                        CDC_file.h \
-                        CDC_flowcontrol.h \
-                        CDC_flowcontrol.c \
-                        CDC_linebuffer.h \
-                        CDC_linebuffer.c \
-                        CDC_open.c \
-                        CDC_open.h \
-                        CDC_parity.c \
-                        CDC_parity.h \
-                        CDC_read.c \
-                        CDC_read.h \
-                        CDC_stopbits.c \
-                        CDC_string.h \
-                        CDC_string.c \
-                        CDC_stopbits.h \
-                        CDC_wordsize.c \
-                        CDC_wordsize.h \
-                        CDC_write.c \
-                        CDC_write.h \
-                        cdc.h
+lib_LTLIBRARIES               = libcdctool.la
+libcdctool_la_CFLAGS          = @NOCYGWIN@
+libcdctool_la_LDFLAGS         = @NOCYGWIN@ -no-undefined
+libcdctool_la_SOURCES         = CDC_baudrate.c \
+                                CDC_close.c \
+                                CDC_flowcontrol.c \
+                                CDC_linebuffer.c \
+                                CDC_open.c \
+                                CDC_parity.c \
+                                CDC_read.c \
+                                CDC_stopbits.c \
+                                CDC_wordsize.c \
+                                CDC_write.c
+include_HEADERS               = CDC_baudrate.h \
+                                CDC_close.h \
+                                CDC_file.h \
+                                CDC_flowcontrol.h \
+                                CDC_linebuffer.h \
+                                CDC_open.h \
+                                CDC_parity.h \
+                                CDC_read.h \
+                                CDC_stopbits.h \
+                                CDC_wordsize.h \
+                                CDC_write.h \
+                                cdc.h
+
+extra_DIST                    = Doxyfile 
 
 # DOXYGEN rules follow
 

@@ -20,7 +20,7 @@
 #ifndef CDCLOSE_H
 #define CDCLOSE_H
 
-#include "CDC_file.h"
+#include <CDC_file.h>
 
 /**
  *  Close a CDCFile after using it. Also frees memory used by the pointer.

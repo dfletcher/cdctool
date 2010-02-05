@@ -12,7 +12,13 @@ Updated README, it had bad information about documentation.
 Uploaded a version of the API documentation online:
 http://fletchtronics.net/cdctool-api/
 
-[0.0.3]
+0.0.3
 Added support for interactive mode. Changed CDCLineBuffer so that it can support
 input from any source, not just CDCFile. Added --interactive,-a command line
 option to the cdctool program.
+
+0.0.4
+Two minor syntax issues causing -Wall -Werror to stop the build were fixed.
+Moved .h files from the _SOURCES variable to include_HEADERS so they now install
+properly. Fixed the #include symbols in all sources to use angle brackets <>
+instead of quotes.

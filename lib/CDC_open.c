@@ -19,12 +19,12 @@
 -----------------------------------------------------------------------------*/
 
 #include <stdlib.h>
-#include "CDC_open.h"
-#include "CDC_baudrate.h"
-#include "CDC_flowcontrol.h"
-#include "CDC_parity.h"
-#include "CDC_stopbits.h"
-#include "CDC_wordsize.h"
+#include <CDC_open.h>
+#include <CDC_baudrate.h>
+#include <CDC_flowcontrol.h>
+#include <CDC_parity.h>
+#include <CDC_stopbits.h>
+#include <CDC_wordsize.h>
 
 CDCFile *cdc_open(const char *pathport) {
 

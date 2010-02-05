@@ -20,9 +20,9 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "CDC_linebuffer.h"
-#include "CDC_string.h"
-#include "CDC_read.h"
+#include <CDC_linebuffer.h>
+#include <CDC_string.h>
+#include <CDC_read.h>
 
 // NOTE: Previous versions used a bigger buffer but the new feature of
 // supporting different types of streams was causing trouble. Specifically,

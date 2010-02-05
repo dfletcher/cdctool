@@ -20,7 +20,7 @@
 #ifndef CDCREAD_H
 #define CDCREAD_H
 
-#include "CDC_file.h"
+#include <CDC_file.h>
 
 /**
  *  Read data from a CDCFile. Set any needed serial comm parameters before

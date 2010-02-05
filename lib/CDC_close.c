@@ -22,7 +22,7 @@
 #ifndef __WIN32__
   #include <unistd.h>
 #endif
-#include "CDC_close.h"
+#include <CDC_close.h>
 
 void cdc_close(CDCFile *file) {
 

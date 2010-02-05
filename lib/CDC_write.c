@@ -21,7 +21,7 @@
 #ifndef __WIN32__
   #include <unistd.h>
 #endif
-#include "CDC_write.h"
+#include <CDC_write.h>
 
 size_t cdc_write(CDCFile *file, const char *string, size_t length) {
 
