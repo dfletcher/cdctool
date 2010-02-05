@@ -51,7 +51,7 @@ am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(libdir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
-libcdctool_la_LIBADD =
+libcdctool_la_DEPENDENCIES =
 am_libcdctool_la_OBJECTS = libcdctool_la-CDC_baudrate.lo \
 	libcdctool_la-CDC_close.lo libcdctool_la-CDC_discover.lo \
 	libcdctool_la-CDC_flowcontrol.lo \
@@ -89,6 +89,8 @@ AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
+CDC_CFLAGS = @CDC_CFLAGS@
+CDC_LDADD = @CDC_LDADD@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
@@ -215,8 +217,9 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libcdctool.la
-libcdctool_la_CFLAGS = @NOCYGWIN@
+libcdctool_la_CFLAGS = @NOCYGWIN@ @CDC_CFLAGS@
 libcdctool_la_LDFLAGS = @NOCYGWIN@ -no-undefined
+libcdctool_la_LIBADD = @CDC_LDADD@
 libcdctool_la_SOURCES = CDC_baudrate.c \
                         CDC_baudrate.h \
                         CDC_close.c \

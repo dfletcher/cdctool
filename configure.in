@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.50])
+AC_PREREQ([2.59])
 
 AC_INIT([cdctool], [0.0.4], [fletch@fletchtronics.net])
 
@@ -14,6 +14,9 @@ DX_DOXYGEN_FEATURE(ON)
 DX_HTML_FEATURE(ON)
 DX_MAN_FEATURE(ON)
 
+CDC_LDADD =
+CDC_CFLAGS =
+
 # Checks for programs.
 AC_PROG_CC
 AM_PROG_CC_C_O
@@ -25,6 +28,8 @@ AC_CHECK_HEADERS([stdlib.h string.h stdio.h regex.h popt.h])
 # Cygwin needs extra love.
 if test "X`uname | grep CYGWIN`" != "X"; then
   NOCYGWIN="-mno-cygwin"
+  CDC_CFLAGS += "-I${top_srcdir}/regex/lib"
+  CDC_LDADD += "${LTLIBINTL} -lgnu -L${top_builddir}/regex/lib"
 else
   NOCYGWIN=""
 fi
@@ -48,6 +53,9 @@ AC_FUNC_MALLOC
 
 # All warnings, warnings are errors.
 CFLAGS="$CFLAGS -Wall -Werror"
+
+AC_SUBST([CDC_LDADD])
+AC_SUBST([CDC_CFLAGS])
 
 AC_CONFIG_FILES([
   Makefile

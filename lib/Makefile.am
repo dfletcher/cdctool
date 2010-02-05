@@ -1,6 +1,7 @@
 lib_LTLIBRARIES       = libcdctool.la
-libcdctool_la_CFLAGS  = @NOCYGWIN@
+libcdctool_la_CFLAGS  = @NOCYGWIN@ @CDC_CFLAGS@
 libcdctool_la_LDFLAGS = @NOCYGWIN@ -no-undefined
+libcdctool_la_LIBADD  = @CDC_LDADD@
 libcdctool_la_SOURCES = CDC_baudrate.c \
                         CDC_baudrate.h \
                         CDC_close.c \
