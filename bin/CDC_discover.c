@@ -22,7 +22,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <popt.h>
-#include "cdc.h"
+#include <cdc.h>
 #include "config.h"
 
 FILE *in;

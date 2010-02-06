@@ -23,12 +23,14 @@
 
 #include <CDC_baudrate.h>
 #include <CDC_close.h>
+#include <CDC_discover.h>
 #include <CDC_file.h>
 #include <CDC_flowcontrol.h>
 #include <CDC_linebuffer.h>
 #include <CDC_open.h>
 #include <CDC_parity.h>
 #include <CDC_read.h>
+#include <CDC_string.h>
 #include <CDC_stopbits.h>
 #include <CDC_wordsize.h>
 #include <CDC_write.h>

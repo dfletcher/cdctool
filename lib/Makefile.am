@@ -3,16 +3,19 @@ libcdctool_la_CFLAGS          = @NOCYGWIN@
 libcdctool_la_LDFLAGS         = @NOCYGWIN@ -no-undefined
 libcdctool_la_SOURCES         = CDC_baudrate.c \
                                 CDC_close.c \
+                                CDC_discover.c \
                                 CDC_flowcontrol.c \
                                 CDC_linebuffer.c \
                                 CDC_open.c \
                                 CDC_parity.c \
                                 CDC_read.c \
                                 CDC_stopbits.c \
+                                CDC_string.c \
                                 CDC_wordsize.c \
                                 CDC_write.c
 include_HEADERS               = CDC_baudrate.h \
                                 CDC_close.h \
+                                CDC_discover.h \
                                 CDC_file.h \
                                 CDC_flowcontrol.h \
                                 CDC_linebuffer.h \
@@ -20,6 +23,7 @@ include_HEADERS               = CDC_baudrate.h \
                                 CDC_parity.h \
                                 CDC_read.h \
                                 CDC_stopbits.h \
+                                CDC_string.h \
                                 CDC_wordsize.h \
                                 CDC_write.h \
                                 cdc.h
