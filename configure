@@ -913,9 +913,11 @@ LIPO
 OTOOL
 OTOOL64
 CPP
+NOCYGWIN
 POPT
 LIBOBJS
-NOCYGWIN
+CDC_LDADD
+CDC_CFLAGS
 LTLIBOBJS'
 ac_subst_files=''
       ac_precious_vars='build_alias
@@ -4470,6 +4472,9 @@ esac
 
 
 
+CDC_LDADD =
+CDC_CFLAGS =
+
 # Checks for programs.
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -6447,13 +6452,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:6450: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:6455: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:6453: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:6458: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:6456: output\"" >&5)
+  (eval echo "\"\$as_me:6461: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -7675,7 +7680,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 7678 "configure"' > conftest.$ac_ext
+  echo '#line 7683 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -9526,11 +9531,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9529: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9534: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9533: \$? = $ac_status" >&5
+   echo "$as_me:9538: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9865,11 +9870,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9868: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9873: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9872: \$? = $ac_status" >&5
+   echo "$as_me:9877: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9970,11 +9975,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9973: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9978: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9977: \$? = $ac_status" >&5
+   echo "$as_me:9982: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10025,11 +10030,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10028: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10033: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:10032: \$? = $ac_status" >&5
+   echo "$as_me:10037: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -12794,7 +12799,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 12797 "configure"
+#line 12802 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12890,7 +12895,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 12893 "configure"
+#line 12898 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13118,86 +13123,13 @@ CC="$lt_save_CC"
 
 
 
-# Checks for libraries.
-{ echo "$as_me:$LINENO: checking for poptGetContext in -lpopt" >&5
-echo $ECHO_N "checking for poptGetContext in -lpopt... $ECHO_C" >&6; }
-if test "${ac_cv_lib_popt_poptGetContext+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lpopt  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char poptGetContext ();
-int
-main ()
-{
-return poptGetContext ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest$ac_exeext &&
-       $as_test_x conftest$ac_exeext; then
-  ac_cv_lib_popt_poptGetContext=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_popt_poptGetContext=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_popt_poptGetContext" >&5
-echo "${ECHO_T}$ac_cv_lib_popt_poptGetContext" >&6; }
-if test $ac_cv_lib_popt_poptGetContext = yes; then
-
-  POPT="-lpopt"
-
-else
-
-  echo
-  echo "FATAL: Cannot find popt. It is needed to build cdctool."
-  echo
-  exit -1
-
-fi
-
-
-
 # Checks for header files.
 
-for ac_header in stdlib.h
+
+
+
+
+for ac_header in stdlib.h string.h stdio.h regex.h popt.h
 do
 as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
 if { as_var=$as_ac_Header; eval "test \"\${$as_var+set}\" = set"; }; then
@@ -13340,6 +13272,93 @@ _ACEOF
 fi
 
 done
+
+
+# Cygwin needs extra love.
+if test "X`uname | grep CYGWIN`" != "X"; then
+  NOCYGWIN="-mno-cygwin"
+  CDC_CFLAGS += "-I${top_srcdir}/regex/lib"
+  CDC_LDADD += "${LTLIBINTL} -lgnu -L${top_builddir}/regex/lib"
+else
+  NOCYGWIN=""
+fi
+
+
+# Checks for libraries.
+{ echo "$as_me:$LINENO: checking for poptGetContext in -lpopt" >&5
+echo $ECHO_N "checking for poptGetContext in -lpopt... $ECHO_C" >&6; }
+if test "${ac_cv_lib_popt_poptGetContext+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpopt  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char poptGetContext ();
+int
+main ()
+{
+return poptGetContext ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext &&
+       $as_test_x conftest$ac_exeext; then
+  ac_cv_lib_popt_poptGetContext=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_popt_poptGetContext=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_popt_poptGetContext" >&5
+echo "${ECHO_T}$ac_cv_lib_popt_poptGetContext" >&6; }
+if test $ac_cv_lib_popt_poptGetContext = yes; then
+
+  POPT="-lpopt"
+
+else
+
+  echo
+  echo "FATAL: Cannot find popt. It is needed to build cdctool."
+  echo
+  exit -1
+
+fi
+
 
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -13581,16 +13600,11 @@ fi
 
 
 
-# Cygwin needs extra love.
-if test "X`uname | grep CYGWIN`" != "X"; then
-  NOCYGWIN="-mno-cygwin"
-else
-  NOCYGWIN=""
-fi
-
-
 # All warnings, warnings are errors.
 CFLAGS="$CFLAGS -Wall -Werror"
+
+
+
 
 ac_config_files="$ac_config_files Makefile bin/Makefile lib/Makefile"
 
@@ -14838,13 +14852,15 @@ LIPO!$LIPO$ac_delim
 OTOOL!$OTOOL$ac_delim
 OTOOL64!$OTOOL64$ac_delim
 CPP!$CPP$ac_delim
+NOCYGWIN!$NOCYGWIN$ac_delim
 POPT!$POPT$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
-NOCYGWIN!$NOCYGWIN$ac_delim
+CDC_LDADD!$CDC_LDADD$ac_delim
+CDC_CFLAGS!$CDC_CFLAGS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 56; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 58; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

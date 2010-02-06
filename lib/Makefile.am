@@ -11,7 +11,6 @@ libcdctool_la_SOURCES         = CDC_baudrate.c \
                                 CDC_stopbits.c \
                                 CDC_wordsize.c \
                                 CDC_write.c
-
 include_HEADERS               = CDC_baudrate.h \
                                 CDC_close.h \
                                 CDC_file.h \
@@ -27,7 +26,6 @@ include_HEADERS               = CDC_baudrate.h \
 
 extra_DIST                    = Doxyfile 
 
-			
 # DOXYGEN rules follow
 
 ## --------------------------------- ##

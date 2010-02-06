@@ -17,37 +17,28 @@
    limitations under the License. 
 
 -----------------------------------------------------------------------------*/
-#ifndef CDSTRUCT_H
-#define CDSTRUCT_H
 
-#ifdef __WIN32__
-  #include <windows.h>
-#else
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <fcntl.h>
-  #include <termios.h>
-  #include <stdio.h>
-  #define _POSIX_SOURCE 1
-#endif
+#include "CDC_string.h"
 
-/**
- *  Wraps platform specific serial communications file objects into a single
- *  cross platform structure. Never access the fields directly, use only the
- *  functions in this library to manipulate CDCFile*, and then your program
- *  should work on any platform. Sets default comm params to:
- *  57600, 8/n/1, no flow control.
- */
-typedef struct {
-  #ifdef __WIN32__
-    /** Windows backed CDCFile. */
-    HANDLE file;
-    DCB savedparams;
-  #else
-    /** POSIX backed CDCFile. */
-    int file;
-    struct termios savedparams;
-  #endif
-} CDCFile;
+char *cdc_string_copy(const char *original) {
+  size_t origlen = strlen(original);
+  char *rop = (char*)malloc(origlen+1);
+  rop[origlen] = 0;
+  strncpy(rop, original, origlen);
+  return rop;
+}
 
-#endif /* [CDSTRUCT_H] */
+char *cdc_string_copy_n(const char *original, size_t length) {
+  char *rop = (char*)malloc(length+1);
+  strncpy(rop, original, length);
+  rop[length] = 0;
+  return rop;
+}
+
+int cdc_string_pos(const char *str, char c, size_t length) {
+  int i;
+  for (i=0; i<length; i++) {
+    if (str[i] == c) return i;
+  }
+  return -1;
+}
