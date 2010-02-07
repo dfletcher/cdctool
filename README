@@ -62,13 +62,33 @@ cross-platform code.
 
 Run `make doxygen-doc` and look at ./lib/doc/index.html for API documentation.
 
---------
-BUILDING
---------
-On most platforms, cdctool can be built with:
+-----------------------------
+BUILDING FROM SOURCE PACKAGES
+-----------------------------
+On most platforms, versioned cdctool source code packages can be built with:
 
 ./configure --prefix=/usr && make && sudo make install
 
-NOTE: To build this package in Windows, you will need to use MinGW32 compiler
-with popt. Cygwin is NOT supported since the -mno-cygwin option refuses to work
-with gnulib.
+NOTE: To build cdctool in Windows, you will need to use MinGW32 compiler.
+Cygwin is NOT supported since the -mno-cygwin option refuses to work with
+gnulib. You will need to first build popt for MinGW32.
+
+---------------
+GIT MAINTAINERS
+---------------
+When building from the git source tree you will need to first run the
+./gnulib.sh script in the source directory. It generates the gnulib files
+from a gnulib installation. It expects to find the gnulib-tool program in
+the ../gnulib directory. It should be located outside the cdctool source
+tree. You can obtain this directory using
+`git clone git://git.savannah.gnu.org/gnulib.git`. Example:
+
+  $ mkdir cdctool-working
+  $ cd cdctool-working
+  $ git clone git://github.com/dfletcher/cdctool.git
+  $ git clone git://git.savannah.gnu.org/gnulib.git
+  $ cd cdctool
+  $ ./gnulib.sh
+  $ ./configure --prefix=/usr
+  $ make
+
