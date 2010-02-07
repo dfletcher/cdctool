@@ -1,6 +1,6 @@
 
 --------------------------------
-cdctool 0.0.1
+cdctool 0.0.5
 Copyright (c) 2010 Dave Fletcher
 All Rights Reserved
 --------------------------------
@@ -62,3 +62,13 @@ cross-platform code.
 
 Run `make doxygen-doc` and look at ./lib/doc/index.html for API documentation.
 
+--------
+BUILDING
+--------
+On most platforms, cdctool can be built with:
+
+./configure --prefix=/usr && make && sudo make install
+
+NOTE: To build this package in Windows, you will need to use MinGW32 compiler
+with popt. Cygwin is NOT supported since the -mno-cygwin option refuses to work
+with gnulib.

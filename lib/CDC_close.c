@@ -18,8 +18,11 @@
 
 -----------------------------------------------------------------------------*/
 
-#include <stdlib.h>
-#ifndef __WIN32__
+#include "config.h"
+#ifdef __WIN32__
+  #include <windows.h>
+#else
+  #include <stdlib.h>
   #include <unistd.h>
 #endif
 #include <CDC_close.h>

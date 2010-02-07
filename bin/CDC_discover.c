@@ -50,7 +50,6 @@ int main(int argc, const char **argv) {
 
   int i;
   char c;
-  size_t numaddl = 0;
   int linestoread = 1;
   char *outpath = NULL;
   char *errpath = NULL;
@@ -58,6 +57,7 @@ int main(int argc, const char **argv) {
   const char **addl = NULL;
   const char *regexp = NULL;
   const char *command = NULL;
+  unsigned long numaddl = 0;
   CDCDiscoveryResults *discovery;
 
   // I/O defaults.

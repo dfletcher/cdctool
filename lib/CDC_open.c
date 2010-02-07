@@ -18,7 +18,12 @@
 
 -----------------------------------------------------------------------------*/
 
-#include <stdlib.h>
+#include "config.h"
+#ifdef __WIN32__
+  #include <windows.h>
+#else
+  #include <stdlib.h>
+#endif
 #include <CDC_open.h>
 #include <CDC_baudrate.h>
 #include <CDC_flowcontrol.h>

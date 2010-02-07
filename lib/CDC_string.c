@@ -18,7 +18,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "CDC_string.h"
+#include "config.h"
+#include <CDC_string.h>
 
 char *cdc_string_copy(const char *original) {
   size_t origlen = strlen(original);

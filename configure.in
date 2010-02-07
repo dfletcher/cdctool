@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.6])
 
-AC_INIT([cdctool], [0.0.4], [fletch@fletchtronics.net])
+AC_INIT([cdctool], [0.0.5], [fletch@fletchtronics.net])
 
 AC_CONFIG_SRCDIR([bin/CDC_tool.c])
 AC_CONFIG_HEADERS([config.h])
@@ -14,26 +14,18 @@ DX_DOXYGEN_FEATURE(ON)
 DX_HTML_FEATURE(ON)
 DX_MAN_FEATURE(ON)
 
-CDC_LDADD =
-CDC_CFLAGS =
+# Configuration.
+CFLAGS="$CFLAGS -Wall"
 
 # Checks for programs.
 AC_PROG_CC
+gl_EARLY
+gl_INIT
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h string.h stdio.h regex.h popt.h])
-
-# Cygwin needs extra love.
-if test "X`uname | grep CYGWIN`" != "X"; then
-  NOCYGWIN="-mno-cygwin"
-  CDC_CFLAGS += "-I${top_srcdir}/regex/lib"
-  CDC_LDADD += "${LTLIBINTL} -lgnu -L${top_builddir}/regex/lib"
-else
-  NOCYGWIN=""
-fi
-AC_SUBST([NOCYGWIN])
+AC_CHECK_HEADERS([stdlib.h string.h stdio.h popt.h])
 
 # Checks for libraries.
 AC_CHECK_LIB([popt], [poptGetContext], [
@@ -51,15 +43,10 @@ AC_SUBST([POPT])
 # Checks for library functions.
 AC_FUNC_MALLOC
 
-# All warnings, warnings are errors.
-CFLAGS="$CFLAGS -Wall -Werror"
-
-AC_SUBST([CDC_LDADD])
-AC_SUBST([CDC_CFLAGS])
-
 AC_CONFIG_FILES([
   Makefile
   bin/Makefile
   lib/Makefile
+  gnulib/Makefile
 ])
 AC_OUTPUT

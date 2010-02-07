@@ -18,8 +18,13 @@
 
 -----------------------------------------------------------------------------*/
 
-#include <stdlib.h>
-#include <string.h>
+#include "config.h"
+#ifdef __WIN32__
+  #include <windows.h>
+#else
+  #include <stdlib.h>
+  #include <string.h>
+#endif
 #include <CDC_linebuffer.h>
 #include <CDC_string.h>
 #include <CDC_read.h>

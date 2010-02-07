@@ -20,6 +20,10 @@
 #ifndef CDCLINE_H
 #define CDCLINE_H
 
+#ifdef __WIN32__
+  #include <windows.h>
+#else
+#endif
 #include <stdio.h>
 #include <CDC_file.h>
 

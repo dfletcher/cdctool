@@ -18,6 +18,7 @@
 
 -----------------------------------------------------------------------------*/
 
+#include "config.h"
 #include <CDC_parity.h>
 
 void cdc_set_parity(CDCFile *file, CDCParity parity) {

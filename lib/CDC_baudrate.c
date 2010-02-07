@@ -18,6 +18,7 @@
 
 -----------------------------------------------------------------------------*/
 
+#include "config.h"
 #include <CDC_baudrate.h>
 
 void cdc_set_baudrate(CDCFile *file, CDCBaudRate baudrate) {

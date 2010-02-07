@@ -18,19 +18,21 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef __WIN32__
+#include "config.h"
+#ifdef __WIN32__
+  #include <windows.h>
+#else
   #include <glob.h>
 #endif
-
-#include <stdlib.h>
-#include "CDC_discover.h"
-#include "CDC_file.h"
-#include "CDC_open.h"
-#include "CDC_read.h"
-#include "CDC_write.h"
-#include "CDC_close.h"
-#include "CDC_string.h"
-#include "CDC_linebuffer.h"
+#include "regex.h"
+#include <CDC_discover.h>
+#include <CDC_file.h>
+#include <CDC_open.h>
+#include <CDC_read.h>
+#include <CDC_write.h>
+#include <CDC_close.h>
+#include <CDC_string.h>
+#include <CDC_linebuffer.h>
 
 #ifdef __WIN32__
   const char *CDCDISCOVER_BASE[] = {
@@ -61,7 +63,7 @@
 #endif
 
 void _cdc_discover(
-  CDCDiscoveryResults *rop, CDCFile *file, size_t numlines,
+  CDCDiscoveryResults *rop, CDCFile *file, unsigned long numlines,
   const char *path, const char *cmd, regex_t *cregex
 ) {
   int i;
@@ -71,7 +73,7 @@ void _cdc_discover(
   for (i=0; i<numlines; i++) {
     char *line = cdc_linebuffer_readline(buf);
     if (regexec(cregex, line, 0, 0, 0) == 0) {
-      size_t newlen = rop->matches++;
+      unsigned long newlen = rop->matches++;
       rop->match = realloc(rop->match, sizeof(char*) * rop->matches);
       rop->match[newlen] = cdc_string_copy(path);
     }
@@ -81,8 +83,8 @@ void _cdc_discover(
 }
 
 CDCDiscoveryResults *cdc_discover(
-  const char *cmd, const char *regex, size_t numlines,
-  size_t numaddl, const char **addl
+  const char *cmd, const char *regex, unsigned long numlines,
+  unsigned long numaddl, const char **addl
 ) {
   int i, j;
   regex_t cregex;

@@ -20,9 +20,6 @@
 #ifndef CDCDISCOVER_H
 #define CDCDISCOVER_H
 
-#include <stdlib.h>
-#include <regex.h>
-
 #ifndef CDCDISCOVER_NUM_CHECKS
 /** This is the number of COM ports to check in Windows. Use
  *  -DCDCDISCOVER_NUM_CHECKS [n] to increase or decrease this
@@ -36,7 +33,7 @@
  */
 typedef struct {
   char **match;
-  size_t matches;
+  unsigned long matches;
 } CDCDiscoveryResults;
 
 /**
@@ -53,8 +50,8 @@ typedef struct {
  *          this structure when done.
  */
 CDCDiscoveryResults *cdc_discover(
-  const char *testcommand, const char *regex, size_t numlines,
-  size_t numaddl, const char **addl
+  const char *testcommand, const char *regex, unsigned long numlines,
+  unsigned long numaddl, const char **addl
 );
 
 /**

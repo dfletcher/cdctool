@@ -21,8 +21,12 @@
 #ifndef CDCSTRING_H
 #define CDCSTRING_H
 
-#include <stdlib.h>
-#include <string.h>
+#ifdef __WIN32__
+  #include <windows.h>
+#else
+  #include <stdlib.h>
+  #include <string.h>
+#endif
 
 /**
  *  Allocate a new string and copy the contents of the original.

@@ -1,6 +1,7 @@
 lib_LTLIBRARIES               = libcdctool.la
-libcdctool_la_CFLAGS          = @NOCYGWIN@
-libcdctool_la_LDFLAGS         = @NOCYGWIN@ -no-undefined
+libcdctool_la_CFLAGS          = -I$(top_builddir)/gnulib -I$(top_srcdir)/gnulib
+libcdctool_la_LIBADD          = -L@top_builddir@/gnulib -lgnu
+libcdctool_la_LDFLAGS         = -no-undefined
 libcdctool_la_SOURCES         = CDC_baudrate.c \
                                 CDC_close.c \
                                 CDC_discover.c \

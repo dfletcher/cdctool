@@ -18,7 +18,10 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef __WIN32__
+#include "config.h"
+#ifdef __WIN32__
+  #include <windows.h>
+#else
   #include <unistd.h>
 #endif
 #include <CDC_write.h>
