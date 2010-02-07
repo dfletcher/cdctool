@@ -16,6 +16,8 @@ DX_MAN_FEATURE(ON)
 
 # Configuration.
 CFLAGS="$CFLAGS -Wall"
+CDC_PC_CFLAGS="-Wall"
+CDC_PC_LDFLAGS="-lcdctool"
 
 # Checks for programs.
 AC_PROG_CC
@@ -43,8 +45,12 @@ AC_SUBST([POPT])
 # Checks for library functions.
 AC_FUNC_MALLOC
 
+AC_SUBST([CDC_PC_CFLAGS])
+AC_SUBST([CDC_PC_LDFLAGS])
+
 AC_CONFIG_FILES([
   Makefile
+  cdctool.pc
   bin/Makefile
   lib/Makefile
   gnulib/Makefile
