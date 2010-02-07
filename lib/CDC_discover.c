@@ -66,16 +66,25 @@ void _cdc_discover(
   CDCDiscoveryResults *rop, CDCFile *file, unsigned long numlines,
   const char *path, const char *cmd, regex_t *cregex
 ) {
-  int i;
+  int i, j;
   CDCLineBuffer *buf = cdc_filebuffer_new(file);
   cdc_write(file, cmd, strlen(cmd));
   cdc_write(file, "\r\n", 2);
   for (i=0; i<numlines; i++) {
     char *line = cdc_linebuffer_readline(buf);
     if (regexec(cregex, line, 0, 0, 0) == 0) {
-      unsigned long newlen = rop->matches++;
-      rop->match = realloc(rop->match, sizeof(char*) * rop->matches);
-      rop->match[newlen] = cdc_string_copy(path);
+      int exists = 0;
+      for (j=0; j<rop->matches; j++) {
+        if (strcmp(rop->match[j], path)==0) {
+          exists = 1;
+	  break;
+        }
+      }
+      if (!exists) {
+        unsigned long newlen = rop->matches++;
+        rop->match = realloc(rop->match, sizeof(char*) * rop->matches);
+        rop->match[newlen] = cdc_string_copy(path);
+      }
     }
     cdc_linebuffer_freeline(line);
   }
